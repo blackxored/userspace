@@ -1,2 +1,0 @@
-- shell:
-  - [ docker pull blackxored/userspace:latest, Downloading dotfiles container]
