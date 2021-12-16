@@ -48,7 +48,7 @@ RUN \
 COPY ./ /home/${user}/.userspace/
 
 RUN \
-   git clone --recursive git@${vcsprovider}:${vcsowner}/${dotfiles} /home/${user}/.dotfiles && \
+   git clone --recursive https://${vcsprovider}/${vcsowner}/${dotfiles} /home/${user}/.dotfiles && \
    chown -R ${user}:${group} /home/${user}/.dotfiles && \
    chown -R ${user}:${group} /home/${user}/.userspace && \
    cd /home/${user}/.userspace && \
