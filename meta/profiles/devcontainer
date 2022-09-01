@@ -1,0 +1,5 @@
+devcontainer-dotfiles
+zsh-dependencies
+zsh-plugins
+nvim-sudo
+git-sudo
