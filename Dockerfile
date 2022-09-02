@@ -1,6 +1,6 @@
 FROM alpine:latest
 LABEL maintainer "Adrian Perez <adrian@adrianperez.org>"
-LABEL org.opencontainers.image.source https://github.com/blackxored/userspace
+LABEL org.opencontainers.image.source https://github.com/xoredg/userspace
 
 ARG user=xored
 ARG group=wheel
@@ -13,8 +13,11 @@ ARG vcsowner=xoredg
 USER root
 
 RUN \
-    echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    apk upgrade --no-cache && \
+ echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+    && echo "http://dl-cdn.alpinelinux.org/alpine/v3.9/main" >> /etc/apk/repositories \
+    && echo "http://dl-cdn.alpinelinux.org/alpine/v3.9/community" >> /etc/apk/repositories \
+    && apk upgrade --no-cache && \
     apk add --update --no-cache \
         sudo \
         autoconf \
@@ -24,6 +27,11 @@ RUN \
         ncurses \
         ca-certificates \
         libressl \
+        git git-doc \
+        python3 \
+        python3-dev \
+        openssh \
+        openssl \
         bash-completion \
         cmake \
         ctags \
@@ -33,11 +41,16 @@ RUN \
         gcc \
         coreutils \
         wget \
+        npm \
         neovim \
-        git git-doc \
         zsh \
         docker \
-        docker-compose
+        docker-compose \
+        direnv \
+        jq \
+        tmux \
+        ripgrep \
+    && npm install -g yarn
 
 # User configuration
 RUN \
@@ -46,21 +59,24 @@ RUN \
   addgroup ${user} docker
 
 COPY ./ /home/${user}/.userspace/
+RUN chown -R ${user}:${group} /home/${user}/.userspace/
 
 RUN \
    git clone --recursive https://${vcsprovider}/${vcsowner}/${dotfiles} /home/${user}/.dotfiles && \
    chown -R ${user}:${group} /home/${user}/.dotfiles && \
+   cd /home/${user}/.dotfiles && \
+   sudo -u ${user} git remote set-url origin git@${vcsprovider}:${vcsowner}/${dotfiles} && \
    chown -R ${user}:${group} /home/${user}/.userspace && \
    cd /home/${user}/.userspace && \
-   git remote set-url origin git@${vcsprovider}:${vcsowner}/${userspace} && \
-   cd /home/${user}/.dotfiles && \
-   git remote set-url origin git@${vcsprovider}:${vcsowner}/${dotfiles}
+   sudo -u ${user} git remote set-url origin git@${vcsprovider}:${vcsowner}/${userspace} 
 
-USER ${user}
+ USER ${user}
 RUN \
   cd $HOME/.dotfiles && \
-  ./install-profile default && \
-  ./install-standalone \
+  ./install-profile default \
+  && cd $HOME/.userspace \
+  && if [ ! -d ~/.fzf ]; then git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf; fi && ~/.fzf/install --key-bindings --completion --no-update-rc \
+  && ./install-standalone \
     zsh-dependencies \
     zsh-plugins \
     vim-dependencies \
