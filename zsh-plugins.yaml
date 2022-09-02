@@ -1,0 +1,2 @@
+- shell:
+    - [ exit 0, Installing Zsh plugins... ]
