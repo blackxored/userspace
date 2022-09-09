@@ -22,4 +22,4 @@ docker run -it --rm \
   -e SSH_AUTH_SOCK=$SSH_AUTH_SOCK \
   -u `id -u` \
   --network host \
-  ghcr.io/blackxored/userspace:main "$@"
+  ghcr.io/xoredg/userspace:main "$@"
