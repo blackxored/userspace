@@ -17,8 +17,8 @@ RUN \
     && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
     && echo "http://dl-cdn.alpinelinux.org/alpine/v3.9/main" >> /etc/apk/repositories \
     && echo "http://dl-cdn.alpinelinux.org/alpine/v3.9/community" >> /etc/apk/repositories \
-    && apk upgrade --no-cache && \
-    apk add --update --no-cache \
+    && apk upgrade --no-cache \
+    && apk add --update --no-cache \
         sudo \
         autoconf \
         automake \
@@ -30,6 +30,7 @@ RUN \
         git git-doc \
         python3 \
         python3-dev \
+        py3-pip \
         openssh \
         openssl \
         bash-completion \
@@ -50,6 +51,11 @@ RUN \
         jq \
         tmux \
         ripgrep \
+        yaml-cpp=0.6.2-r2 \
+        fontconfig \
+    && ln -sf python3 /usr/bin/python \
+    && python3 -m ensurepip \
+    && pip3 install --no-cache --upgrade pip setuptools \
     && npm install -g yarn
 
 # User configuration
