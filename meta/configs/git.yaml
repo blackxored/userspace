@@ -1,10 +1,4 @@
 - shell:
     - apt update
     - apt install -y make libssl-dev libghc-zlib-dev libcurl4-gnutls-dev libexpat1-dev gettext
-    - [cd /tmp, Install git...]
-    - wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.37.3.tar.gz
-    - tar zxf git-2.37.3.tar.gz
-    - cd git-2.37.3
-    - make configure
-    - ./configure --prefix=/usr/local
-    - make all && make install
+    - [cd /tmp && wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.37.3.tar.gz && tar zxf git-2.37.3.tar.gz && cd git-2.37.3 && make configure && ./configure --prefix=/usr/local && make all && make install && rm -rf git-*, Installing git]
