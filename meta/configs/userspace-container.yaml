@@ -1,2 +1,2 @@
 - shell:
-    - [ docker pull gchr.io/xoredg/userspace:main, Downloading userspace container... ]
+    - [ docker pull ghcr.io/xoredg/userspace:main, Downloading userspace container... ]
